@@ -85,6 +85,11 @@ function main() {
   process.execPath = '/'; // matches argv[0]
 
   process.version = 'v0.10.21';
+  process.versions = {
+    node: process.version,
+    webnpm: '0.0.0',
+    // TODO: npm.version, etc.
+  };
 
   var npm = require('npm');
   console.log('npm=',npm);
