@@ -96,6 +96,10 @@ fs.statSync = function(file) {
 
 fs.readdirSync = window.staticReaddirSync;
 
+// TODO: browserify-fs WriteStream
+var stream = require('stream');
+fs.WriteStream = stream.Writable;
+
 main(fs);
 
 function main() {
