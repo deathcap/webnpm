@@ -39,10 +39,25 @@ var textReplacements = [
 
   // npm/node_modules/npm-registry-client/lib/request.js
   [/(var req = request\(opts, decodeResponseBody\(done\)\))/g,
-    'opts.url = opts.url.href; ' // workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
-    + 'opts.followRedirect = false; ' // unsupported option by browser-request TODO: support it? via a corsproxy?
+    'opts.followRedirect = false; ' // unsupported option by browser-request TODO: support it? via a corsproxy?
     + (CORS_PROXY ? 'opts.url = "' + CORS_PROXY + '" + opts.url.replace(/^https?:\\/\\//, ""); ' : '')
-    + '$1'],
+    + '$1;\n'
+    // browser-request doesn't fully implement the request API :(
+    + 'req.on = function(name,cb) {\n' // TODO: have browser-request inherit EventEmitter, or Stream..
+    + '   if (name==="error") req.onerror = cb;\n'
+    + '   else console.log("request on",name,cb);\n'
+    + '};\n'
+    + 'req.headers = {};\n' // browser-request missing headers too
+  ],
+  [/'followRedirect'/, "'followRedirectX'"], // suppress "option.followRedirect is not supported" error https://github.com/iriscouch/browser-request/issues/37
+
+  // node_modules/npm/node_modules/npm-registry-client/lib/initialize.js
+  //  workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
+  [/url          : uri/, 'url: (uri.href ? uri.href : uri)'],
+
+  // node_modules/npm/node_modules/npm-registry-client/lib/fetch.js
+  //  browser-request() requires a callback, even though request() doesn't
+  [/cb\(null, request\(opts\)\)/g, 'cb(null, request(opts, function(){ console.log("request ",arguments); }));'],
 ];
 
 // Included file data for staticReadFileSync; this is similar to
