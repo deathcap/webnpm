@@ -1,10 +1,15 @@
 var browserify = require('browserify');
 var brfs = require('brfs');
 var through = require('through');
+var fs = require('fs');
 
 require('browserify/lib/builtins').fs = 'create-webfs.js'; // TODO: find a better way to replace this module
 
 var b = browserify();
+
+var textReplacements = [
+  [/rfile\('.\/template.js'\)/, JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8'))],
+];
 
 // directly include rfile TODO: use brfs, but it replaces fs.readFileSync
 b.transform(function(s) {
@@ -13,11 +18,14 @@ b.transform(function(s) {
 
   function write(buf) { data += buf; }
   function end() {
-    var fs = require('fs');
-    var s = data;
-    var includedFile = fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8');
-    s = s.replace(/rfile\('.\/template.js'\)/, JSON.stringify(includedFile));
-    this.queue(s);
+    for (var i = 0; i < textReplacements.length; i += 1) {
+      var regex = textReplacements[i][0];
+      var replacement = textReplacements[i][1];
+
+      data  = data.replace(regex, replacement);
+    }
+
+    this.queue(data);
     this.queue(null);
   };
 }, { global: true });
