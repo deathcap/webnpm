@@ -118,7 +118,7 @@ navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes)
 
 function main() {
   var browserify = require('browserify');
-  console.log('browserify=',browserify);
+  global.browserify = browserify;
 
   var Writable = require('stream').Writable;
 
@@ -148,7 +148,6 @@ function main() {
   };
 
   var npm = require('npm');
-  console.log('npm=',npm);
 
   global.npm = npm;
 
@@ -160,10 +159,6 @@ function main() {
       return;
     }
 
-    require('npm/lib/version.js');
-
-    npm.commands.version([], function(err, data) {
-      console.log('command returned:',err,data);
-    });
+    console.log('WebNPM loaded. Try browserify() or npm.commands.*()');
   });
 }
