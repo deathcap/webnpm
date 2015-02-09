@@ -87,6 +87,11 @@ function main() {
 
   var config = {};
 
+  // browserify doesn't pickup dynamic require:
+  //  var cmd = require(__dirname+"/"+a+".js")
+  // so be explicit about it
+  require('npm/lib/version.js');
+
   npm.load(config, function(err) {
     if (err) {
       console.log('npm load failed:',err);
