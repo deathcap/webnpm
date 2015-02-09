@@ -5,7 +5,7 @@ var fs = webfs();
 
 fs.statSync = function(file) {
   return {
-    isFile: function() { return false; },
+    isFile: function() { return true; },
     isFIFO: function() { return false; },
   };
 };
