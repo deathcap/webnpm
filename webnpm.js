@@ -69,6 +69,8 @@ function main() {
   process.argv = ['/']; // our executable, because it exists
   process.execPath = '/'; // matches argv[0]
 
+  process.version = 'v0.10.21';
+
   var npm = require('npm');
   console.log('npm=',npm);
 
