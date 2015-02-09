@@ -32,8 +32,10 @@ var textReplacements = [
 
 
   // npm/node_modules/npm-registry-client/lib/request.js
-  // workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
-  [/(var req = request\(opts, decodeResponseBody\(done\)\))/g, 'opts.url = opts.url.href; $1'],
+  [/(var req = request\(opts, decodeResponseBody\(done\)\))/g,
+    'opts.url = opts.url.href; ' // workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
+    + 'opts.followRedirect = false; ' // unsupported option by browser-request TODO: support it? via a corsproxy?
+    + '$1'],
 ];
 
 // Included file data for staticReadFileSync; this is similar to
