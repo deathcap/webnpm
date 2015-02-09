@@ -8,8 +8,9 @@ require('browserify/lib/builtins').fs = 'create-webfs.js'; // TODO: find a bette
 var b = browserify();
 
 var textReplacements = [
-  [/rfile\('.\/template.js'\)/, JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8'))],
-  [/fs\.readFileSync\(defaultPreludePath, 'utf8'\)/, JSON.stringify(fs.readFileSync('node_modules/browserify/node_modules/browser-pack/_prelude.js', 'utf8'))],
+  [/rfile\('.\/template.js'\)/g, JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8'))],
+  [/fs\.readFileSync\(defaultPreludePath, 'utf8'\)/g, JSON.stringify(fs.readFileSync('node_modules/browserify/node_modules/browser-pack/_prelude.js', 'utf8'))],
+  [/require\.resolve/g, 'require'],
 ];
 
 // directly include rfile TODO: use brfs, but it replaces fs.readFileSync
