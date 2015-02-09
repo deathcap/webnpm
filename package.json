@@ -1,6 +1,6 @@
 {
   "name": "webnpm",
-  "description": "",
+  "description": "browserify npm",
   "version": "0.0.1",
   "main": "webnpm.js",
   "repository": {
