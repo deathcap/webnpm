@@ -7,11 +7,15 @@
     "type": "git",
     "url": "git@github.com:deathcap/webnpm.git"
   },
-  "keywords": [
-    "voxel",
-    "plugin"
-  ],
+  "keywords": [],
+  "scripts": {
+    "start": "node demo.js > bundle.js"
+  },
   "dependencies": {
+    "npm": "^2.5.0",
+    "browserify": "^8.1.3",
+    "wzrd": "^1.2.1",
+    "web-fs": "^1.5.0"
   },
   "license": "MIT"
 }
