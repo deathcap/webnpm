@@ -18,11 +18,11 @@ var textReplacements = [
 // Included file data for staticReadFileSync; this is similar to
 // brfs's fs.readFileSync transclusion but ours is looked up dynamically,
 // because brfs can only replace files from static source code analysis.
-var preloadedReadFileSyncs = {
-  '/node_modules//browserify/node_modules/umd/template.js': JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8')),
-  '/node_modules/browserify/node_modules/browser-pack/_prelude.js': JSON.stringify(fs.readFileSync('node_modules/browserify/node_modules/browser-pack/_prelude.js', 'utf8')),
-  '/node_modules/npm/package.json': JSON.stringify(fs.readFileSync('node_modules/npm/package.json', 'utf8')),
-};
+var preloadedFilenames = [
+  'node_modules/browserify/node_modules/umd/template.js',
+  'node_modules/browserify/node_modules/browser-pack/_prelude.js',
+  'node_modules/npm/package.json',
+];
 
 // directly include rfile TODO: use brfs, but it replaces fs.readFileSync
 b.transform(function(s) {
@@ -45,6 +45,13 @@ b.transform(function(s) {
 
 
 b.add('./webnpm.js');
+
+var preloadedReadFileSyncs = {};
+for (var i = 0; i < preloadedFilenames.length; i += 1) {
+  var path = preloadedFilenames[i];
+  preloadedReadFileSyncs['/' + path] = JSON.stringify(fs.readFileSync(path, 'utf8'));
+}
+
 process.stdout.write('window.preloadedReadFileSyncs = ' + JSON.stringify(preloadedReadFileSyncs) + '\n;');
 
 b.bundle().pipe(process.stdout);

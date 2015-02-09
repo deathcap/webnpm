@@ -4,14 +4,14 @@ window.staticReadFileSync = function(path) {
 
   if (path.match(/^\/file:.*template.js$/)) {
     // Workaround getting '/file:/Users/admin/games/voxeljs/webnpm/template.js' TODO: underlying bug
-    path = '/node_modules//browserify/node_modules/umd/template.js';
+    path = '/node_modules/browserify/node_modules/umd/template.js';
   }
 
   if (path in window.preloadedReadFileSyncs) {
     return window.preloadedReadFileSyncs[path];
   }
 
-  console.log('file not found: ',path);
+  console.log('file not found (add to preloadedFilenames list): ',path);
   return path
 };
 
