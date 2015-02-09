@@ -18,7 +18,7 @@ var textReplacements = [
   [/fs\.readFileSync/g, 'window.staticReadFileSync'],
   [/require\('fs'\)\.readFileSync/g, 'window.staticReadFileSync'],
 
-  [/require\(__dirname\+"\/"\+a\+"\.js"\)/, 'window.npmCommandRequire(a)'], // can't do dynamic require()
+  [/require\(__dirname\+"\/"\+a\+"\.js"\)/, 'window.npmCommandRequire(__dirname+"/"+a+".js")'], // can't do dynamic require()
 ];
 
 // Included file data for staticReadFileSync; this is similar to

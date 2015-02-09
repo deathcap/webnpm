@@ -25,7 +25,8 @@ window.staticReaddirSync = function(path) {
 
 window.npmCommandRequire = function(path) {
   console.log('npm require',path);
-  // TODO
+  // TODO: other lib requires
+  return require('npm/lib/version');
 }
 
 var webfs = require('web-fs');
