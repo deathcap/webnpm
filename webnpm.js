@@ -1,4 +1,7 @@
 
+var browserify = require('browserify');
+console.log('browserify=',browserify);
+
 var Writable = require('stream').Writable;
 
 process.stdout = new Writable();
@@ -18,9 +21,8 @@ process.binding = function() {
 
 process.argv = ['npm'];
 
-//var webfs = require('web-fs');
-
 var npm = require('npm');
+console.log('npm=',npm);
 
 npm.load();
 npm.commands.install();

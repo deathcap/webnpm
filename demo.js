@@ -22,6 +22,8 @@ b.transform(function(s) {
   };
 }, { global: true });
 
-b.add('./demo.js');
+b.transform('brfs');
+
+b.add('./webnpm.js');
 b.bundle().pipe(process.stdout);
 
