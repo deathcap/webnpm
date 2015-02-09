@@ -4,11 +4,13 @@ var through = require('through');
 var fs = require('fs');
 
 var browserify_builtins = require('browserify/lib/builtins');
-
-browserify_builtins.fs = 'create-webfs.js'; // TODO: find a better way to replace this module
-browserify_builtins['graceful-fs'] = 'create-webfs.js';
+browserify_builtins.child_process = 'child_process.js';
+browserify_builtins.fs = require.resolve('browserify-fs'); // TODO: what is the api equivalent of cli -r fs:browserify-fs?
+browserify_builtins['graceful-fs'] = browserify_builtins.fs;
 
 var b = browserify();
+
+//b.require('browserify-fs', {expose:'fs'});
 
 //b.transform('brfs');
 

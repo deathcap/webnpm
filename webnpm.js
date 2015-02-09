@@ -85,36 +85,18 @@ window.npmCommandRequire = function(path) {
   console.log('no such npm command module, update npmCommandRequire:',path);
 }
 
-var webfs = require('web-fs');
+var fs = require('fs');
 
-// https://github.com/mmckegg/web-fs
-navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes) {
-  console.log('granted bytes',grantedBytes);
-  window.webkitRequestFileSystem(PERSISTENT, grantedBytes, function(result) {
-    console.log('requested filesystem', result);
-    global.webfs = webfs(result.root);
-    var fs = global.webfs;
-    
-    fs.statSync = function(file) {
-      return {
-        isFile: function() { return true; },
-        isFIFO: function() { return false; },
-      };
-    };
+fs.statSync = function(file) {
+  return {
+    isFile: function() { return true; },
+    isFIFO: function() { return false; },
+  };
+};
 
-    fs.readdirSync = window.staticReaddirSync;
+fs.readdirSync = window.staticReaddirSync;
 
-    fs.mkdir('/node_modules', function() {
-      console.log('created /node_modules');
-      fs.mkdir('/node_modules/npm', function() {
-        console.log('created /node_modules/npm');
-
-        main(fs);
-      });
-    });
-  });
-});
-
+main(fs);
 
 function main() {
   var browserify = require('browserify');
