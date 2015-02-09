@@ -23,6 +23,11 @@ window.staticReaddirSync = function(path) {
   return [];
 };
 
+window.npmCommandRequire = function(path) {
+  console.log('npm require',path);
+  // TODO
+}
+
 var webfs = require('web-fs');
 
 // https://github.com/mmckegg/web-fs

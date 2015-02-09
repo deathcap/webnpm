@@ -7,7 +7,6 @@ var browserify_builtins = require('browserify/lib/builtins');
 
 browserify_builtins.fs = 'create-webfs.js'; // TODO: find a better way to replace this module
 browserify_builtins['graceful-fs'] = 'create-webfs.js';
-browserify_builtins['/node_modules/npm/lib/version.js'] = 'npm/lib/version.js';
 
 var b = browserify();
 
@@ -15,8 +14,11 @@ var b = browserify();
 
 var textReplacements = [
   [/require\.resolve/g, 'require'], // TODO: what is require.resolve for browserify?
+
   [/fs\.readFileSync/g, 'window.staticReadFileSync'],
   [/require\('fs'\)\.readFileSync/g, 'window.staticReadFileSync'],
+
+  [/require\(__dirname\+"\/"\+a\+"\.js"\)/, 'window.npmCommandRequire(a)'], // can't do dynamic require()
 ];
 
 // Included file data for staticReadFileSync; this is similar to
