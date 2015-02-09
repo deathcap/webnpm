@@ -3,7 +3,7 @@
 window.staticReadFileSync = function(path) {
   console.log('readFileSync', path);
 
-  if (path.match(/^\/file:.*template.js$/)) {
+  if (path.match(/^\/http:.*template.js$/)) {
     // Workaround getting '/file:/Users/admin/games/voxeljs/webnpm/template.js' TODO: underlying bug
     path = '/node_modules/browserify/node_modules/umd/template.js';
   }
