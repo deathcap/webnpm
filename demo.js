@@ -3,6 +3,12 @@ var brfs = require('brfs');
 var through = require('through');
 var fs = require('fs');
 
+// enable if you are running:
+//  sudo npm install -g corsproxy
+//var CORS_PROXY = 'http://localhost:9292/';
+var CORS_PROXY = undefined;
+
+
 var browserify_builtins = require('browserify/lib/builtins');
 browserify_builtins.child_process = 'child_process.js';
 browserify_builtins.fs = require.resolve('browserify-fs'); // TODO: what is the api equivalent of cli -r fs:browserify-fs?
@@ -35,6 +41,7 @@ var textReplacements = [
   [/(var req = request\(opts, decodeResponseBody\(done\)\))/g,
     'opts.url = opts.url.href; ' // workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
     + 'opts.followRedirect = false; ' // unsupported option by browser-request TODO: support it? via a corsproxy?
+    + (CORS_PROXY ? 'opts.url = "' + CORS_PROXY + '" + opts.url.replace(/^https?:\\/\\//, ""); ' : '')
     + '$1'],
 ];
 
