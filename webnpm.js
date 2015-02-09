@@ -1,4 +1,14 @@
 
+window.staticReadFileSync = function(path) {
+  console.log('readFileSync', path);
+  if (path in window.preloadedReadFileSyncs) {
+    return window.preloadedReadFileSyncs[path];
+  }
+
+  console.log('file not found: ',path);
+  return path
+};
+
 var browserify = require('browserify');
 console.log('browserify=',browserify);
 
