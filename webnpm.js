@@ -35,7 +35,8 @@ process.binding = function() {
   return {fs: ''}
 };
 
-process.argv = ['npm'];
+process.argv = ['/']; // our executable, because it exists
+process.execPath = '/'; // matches argv[0]
 
 var npm = require('npm');
 console.log('npm=',npm);
