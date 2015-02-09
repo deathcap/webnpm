@@ -8,10 +8,10 @@ process.stdout = new Writable();
 process.stderr = new Writable();
 
 process.stdout.write = function() {
-  console.log('STDOUT', arguments);
+  console.log.apply(console, arguments);
 };
 process.stderr.write = function() {
-  console.log('STDERR', arguments);
+  console.warn.apply(console, arguments);
 };
 
 
