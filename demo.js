@@ -9,6 +9,7 @@ var b = browserify();
 
 var textReplacements = [
   [/rfile\('.\/template.js'\)/, JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8'))],
+  [/fs\.readFileSync\(defaultPreludePath, 'utf8'\)/, JSON.stringify(fs.readFileSync('node_modules/browserify/node_modules/browser-pack/_prelude.js', 'utf8'))],
 ];
 
 // directly include rfile TODO: use brfs, but it replaces fs.readFileSync
