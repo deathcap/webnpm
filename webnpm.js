@@ -77,6 +77,16 @@ function main() {
 
   global.npm = npm;
 
-  //npm.load();
-  //npm.commands.install();
+  var config = {};
+
+  npm.load(config, function(err) {
+    if (err) {
+      console.log('npm load failed:',err);
+      return;
+    }
+
+    npm.commands.version([], function(err, data) {
+      console.log('command returned:',err,data);
+    });
+  });
 }
