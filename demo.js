@@ -15,7 +15,7 @@ b.transform(function(s) {
   function end() {
     var fs = require('fs');
     var s = data;
-    var includedFile = fs.readFileSync('node_modules//browserify/node_modules/umd/template.js'); // TODO: encoding? string?
+    var includedFile = fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8');
     s = s.replace(/rfile\('.\/template.js'\)/, JSON.stringify(includedFile));
     this.queue(s);
     this.queue(null);
