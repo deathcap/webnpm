@@ -15,7 +15,9 @@
     "npm": "^2.5.0",
     "browserify": "^8.1.3",
     "wzrd": "^1.2.1",
-    "web-fs": "^1.5.0"
+    "web-fs": "^1.5.0",
+    "brfs": "^1.3.0",
+    "through": "^2.3.6"
   },
   "license": "MIT"
 }
