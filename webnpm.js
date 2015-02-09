@@ -1,5 +1,5 @@
 
-
+// replaces fs.readFileSync
 window.staticReadFileSync = function(path) {
   console.log('readFileSync', path);
 
@@ -15,6 +15,13 @@ window.staticReadFileSync = function(path) {
   console.log('file not found (add to preloadedFilenames list): ',path);
   return path
 }
+
+// TODO: https://github.com/substack/brfs/issues/19
+window.staticReaddirSync = function(path) {
+  console.log('readdirSync', path);
+
+  return [];
+};
 
 var webfs = require('web-fs');
 
@@ -32,6 +39,8 @@ navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes)
         isFIFO: function() { return false; },
       };
     };
+
+    fs.readdirSync = window.staticReaddirSync;
 
     fs.mkdir('/node_modules', function() {
       console.log('created /node_modules');

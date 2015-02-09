@@ -4,6 +4,7 @@ var through = require('through');
 var fs = require('fs');
 
 require('browserify/lib/builtins').fs = 'create-webfs.js'; // TODO: find a better way to replace this module
+require('browserify/lib/builtins')['graceful-fs'] = 'create-webfs.js';
 
 var b = browserify();
 
