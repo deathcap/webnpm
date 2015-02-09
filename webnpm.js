@@ -100,7 +100,13 @@ fs.readdirSync = window.staticReaddirSync;
 var stream = require('stream');
 fs.WriteStream = stream.Writable;
 
-main(fs);
+fs.mkdir('/tmp', function(err) {
+  if (err) {
+    console.log('mkdir /tmp failed:',err);
+  }
+
+  main(fs);
+});
 
 function main() {
   var browserify = require('browserify');
