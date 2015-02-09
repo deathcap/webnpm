@@ -19,11 +19,9 @@ var textReplacements = [
 // brfs's fs.readFileSync transclusion but ours is looked up dynamically,
 // because brfs can only replace files from static source code analysis.
 var preloadedReadFileSyncs = {
+  '/node_modules//browserify/node_modules/umd/template.js': JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8')),
   '/node_modules/browserify/node_modules/browser-pack/_prelude.js': JSON.stringify(fs.readFileSync('node_modules/browserify/node_modules/browser-pack/_prelude.js', 'utf8')),
   '/node_modules/npm/package.json': JSON.stringify(fs.readFileSync('node_modules/npm/package.json', 'utf8')),
-
-  // for some reason, the path is unexpectedly absolute for this module TODO
-  '/file:/Users/admin/games/voxeljs/webnpm/template.js': JSON.stringify(fs.readFileSync('node_modules//browserify/node_modules/umd/template.js', 'utf8')),
 };
 
 // directly include rfile TODO: use brfs, but it replaces fs.readFileSync
