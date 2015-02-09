@@ -37,11 +37,8 @@ navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes)
       console.log('created /node_modules');
       fs.mkdir('/node_modules/npm', function() {
         console.log('created /node_modules/npm');
-        fs.writeFile('/node_modules/npm/npmrc', '', {}, function() {
-          console.log('completed writing npmrc');
 
-          main(fs);
-        });
+        main(fs);
       });
     });
   });
