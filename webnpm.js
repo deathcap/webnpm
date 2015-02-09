@@ -1,4 +1,5 @@
 
+
 window.staticReadFileSync = function(path) {
   console.log('readFileSync', path);
 
@@ -13,33 +14,69 @@ window.staticReadFileSync = function(path) {
 
   console.log('file not found (add to preloadedFilenames list): ',path);
   return path
-};
+}
 
-var browserify = require('browserify');
-console.log('browserify=',browserify);
+var webfs = require('web-fs');
 
-var Writable = require('stream').Writable;
+// https://github.com/mmckegg/web-fs
+navigator.webkitPersistentStorage.requestQuota(1024*1024, function(grantedBytes) {
+  console.log('granted bytes',grantedBytes);
+  window.webkitRequestFileSystem(PERSISTENT, grantedBytes, function(result) {
+    console.log('requested filesystem', result);
+    global.webfs = webfs(result.root);
+    var fs = global.webfs;
+    
+    fs.statSync = function(file) {
+      return {
+        isFile: function() { return true; },
+        isFIFO: function() { return false; },
+      };
+    };
 
-process.stdout = new Writable();
-process.stderr = new Writable();
+    fs.mkdir('/node_modules', function() {
+      console.log('created /node_modules');
+      fs.mkdir('/node_modules/npm', function() {
+        console.log('created /node_modules/npm');
+        fs.writeFile('/node_modules/npm/npmrc', '', {}, function() {
+          console.log('completed writing npmrc');
 
-process.stdout.write = function() {
-  console.log.apply(console, arguments);
-};
-process.stderr.write = function() {
-  console.warn.apply(console, arguments);
-};
+          main(fs);
+        });
+      });
+    });
+  });
+});
 
 
-process.binding = function() {
-  return {fs: ''}
-};
+function main() {
+  var browserify = require('browserify');
+  console.log('browserify=',browserify);
 
-process.argv = ['/']; // our executable, because it exists
-process.execPath = '/'; // matches argv[0]
+  var Writable = require('stream').Writable;
 
-var npm = require('npm');
-console.log('npm=',npm);
+  process.stdout = new Writable();
+  process.stderr = new Writable();
 
-npm.load();
-npm.commands.install();
+  process.stdout.write = function() {
+    console.log.apply(console, arguments);
+  };
+  process.stderr.write = function() {
+    console.warn.apply(console, arguments);
+  };
+
+
+  process.binding = function() {
+    return {fs: ''}
+  };
+
+  process.argv = ['/']; // our executable, because it exists
+  process.execPath = '/'; // matches argv[0]
+
+  var npm = require('npm');
+  console.log('npm=',npm);
+
+  global.npm = npm;
+
+  //npm.load();
+  //npm.commands.install();
+}

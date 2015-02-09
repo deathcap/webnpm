@@ -9,7 +9,8 @@
   },
   "keywords": [],
   "scripts": {
-    "start": "node demo.js > bundle.js"
+    "test": "node demo.js > bundle.js",
+    "start": "npm test && wzrd index.html"
   },
   "dependencies": {
     "npm": "^2.5.0",

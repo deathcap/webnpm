@@ -1,13 +1,7 @@
-var webfs = require('web-fs');
 
-// instantiate an instance, because web-fs doesn't, but fs does
-var fs = webfs();
+// create-webfs.js
 
-fs.statSync = function(file) {
-  return {
-    isFile: function() { return true; },
-    isFIFO: function() { return false; },
-  };
-};
+console.log('global.webfs=',global.webfs);
 
-module.exports = fs;
+module.exports = global.webfs;
+
