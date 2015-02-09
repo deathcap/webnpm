@@ -1,0 +1,6 @@
+# webnpm
+
+## License
+
+MIT
+

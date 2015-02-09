@@ -1,0 +1,17 @@
+{
+  "name": "webnpm",
+  "description": "",
+  "version": "0.0.1",
+  "main": "webnpm.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:deathcap/webnpm.git"
+  },
+  "keywords": [
+    "voxel",
+    "plugin"
+  ],
+  "dependencies": {
+  },
+  "license": "MIT"
+}
