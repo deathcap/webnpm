@@ -14,17 +14,63 @@ window.staticReadFileSync = function(path) {
 
   console.log('file not found (add to preloadedFilenames list): ',path);
   return path
-}
+};
+
+var preloadedReaddirSyncs = {
+  '/node_modules/npm/node_modules/npm-registry-client/lib': [
+    // node_modules/npm/node_modules/npm-registry-client/lib|perl -pe'chomp;$_="    \"$_\",\n"'
+    "access.js",
+    "adduser.js",
+    "attempt.js",
+    "authify.js",
+    "deprecate.js",
+    "dist-tags",
+    "fetch.js",
+    "get.js",
+    "initialize.js",
+    "publish.js",
+    "request.js",
+    "star.js",
+    "stars.js",
+    "tag.js",
+    "unpublish.js",
+    "whoami.js",
+  ],
+};
 
 // TODO: https://github.com/substack/brfs/issues/19
 window.staticReaddirSync = function(path) {
   console.log('readdirSync', path);
+  if (path in preloadedReaddirSyncs)
+    return preloadedReaddirSyncs[path];
 
   return [];
 };
 
+window.npmRegistryClientRequire = function(path) {
+  console.log('npm-registry-client require',path);
+  // ls node_modules/npm/node_modules/npm-registry-client/lib|perl -pe's/.js//g'|perl -pe'chomp;$_="  if (path===\"/node_modules/npm/node_modules/npm-registry-client/lib/$_.js\") return require(\"npm/node_modules/npm-registry-client/lib/$_\");\n"'
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/access.js") return require("npm/node_modules/npm-registry-client/lib/access");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/adduser.js") return require("npm/node_modules/npm-registry-client/lib/adduser");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/attempt.js") return require("npm/node_modules/npm-registry-client/lib/attempt");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/authify.js") return require("npm/node_modules/npm-registry-client/lib/authify");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/deprecate.js") return require("npm/node_modules/npm-registry-client/lib/deprecate");
+  //if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/dist-tags.js") return require("npm/node_modules/npm-registry-client/lib/dist-tags");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/fetch.js") return require("npm/node_modules/npm-registry-client/lib/fetch");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/get.js") return require("npm/node_modules/npm-registry-client/lib/get");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/initialize.js") return require("npm/node_modules/npm-registry-client/lib/initialize");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/publish.js") return require("npm/node_modules/npm-registry-client/lib/publish");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/request.js") return require("npm/node_modules/npm-registry-client/lib/request");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/star.js") return require("npm/node_modules/npm-registry-client/lib/star");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/stars.js") return require("npm/node_modules/npm-registry-client/lib/stars");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/tag.js") return require("npm/node_modules/npm-registry-client/lib/tag");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/unpublish.js") return require("npm/node_modules/npm-registry-client/lib/unpublish");
+  if (path==="/node_modules/npm/node_modules/npm-registry-client/lib/whoami.js") return require("npm/node_modules/npm-registry-client/lib/whoami");
+  console.log('not found, add to npmRegistryClientRequire:',path);
+};
+
 window.npmCommandRequire = function(path) {
-  console.log('npm require',path);
+  console.log('npm command require',path);
   // ls node_modules/npm/lib/|perl -pe's/.js//g'|perl -pe'chomp;$_="  if (path===\"/node_modules/npm/lib/$_.js\") return require(\"npm/lib/$_\");\n"'
   if (path==="/node_modules/npm/lib/access.js") return require("npm/lib/access");
   if (path==="/node_modules/npm/lib/adduser.js") return require("npm/lib/adduser");
@@ -91,6 +137,7 @@ fs.statSync = function(file) {
   return {
     isFile: function() { return true; },
     isFIFO: function() { return false; },
+    isDirectory: function() { return false; },
   };
 };
 

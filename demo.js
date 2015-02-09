@@ -7,6 +7,7 @@ var browserify_builtins = require('browserify/lib/builtins');
 browserify_builtins.child_process = 'child_process.js';
 browserify_builtins.fs = require.resolve('browserify-fs'); // TODO: what is the api equivalent of cli -r fs:browserify-fs?
 browserify_builtins['graceful-fs'] = browserify_builtins.fs;
+browserify_builtins['request'] = require.resolve('browser-request');
 
 var b = browserify();
 
@@ -17,10 +18,17 @@ var b = browserify();
 var textReplacements = [
   [/require\.resolve/g, 'require'], // TODO: what is require.resolve for browserify?
 
+  // semi-dynamic fs.readFileSync()
   [/fs\.readFileSync/g, 'window.staticReadFileSync'],
   [/require\('fs'\)\.readFileSync/g, 'window.staticReadFileSync'],
 
-  [/require\(__dirname\+"\/"\+a\+"\.js"\)/, 'window.npmCommandRequire(__dirname+"/"+a+".js")'], // can't do dynamic require()
+  // semi-dynamic require()
+
+  // node_modules/npm/lib/npm.js
+  [/require\(__dirname\+"\/"\+a\+"\.js"\)/g, 'window.npmCommandRequire(__dirname+"/"+a+".js")'],
+
+  // npm/node_modules/npm-registry-client/index.js
+  [/client\[name\] = require\(entry\)/g, 'client[name] = window.npmRegistryClientRequire(entry)'],
 ];
 
 // Included file data for staticReadFileSync; this is similar to
