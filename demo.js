@@ -3,8 +3,11 @@ var brfs = require('brfs');
 var through = require('through');
 var fs = require('fs');
 
-require('browserify/lib/builtins').fs = 'create-webfs.js'; // TODO: find a better way to replace this module
-require('browserify/lib/builtins')['graceful-fs'] = 'create-webfs.js';
+var browserify_builtins = require('browserify/lib/builtins');
+
+browserify_builtins.fs = 'create-webfs.js'; // TODO: find a better way to replace this module
+browserify_builtins['graceful-fs'] = 'create-webfs.js';
+browserify_builtins['/node_modules/npm/lib/version.js'] = 'npm/lib/version.js';
 
 var b = browserify();
 
