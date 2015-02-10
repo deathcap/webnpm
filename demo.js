@@ -3,12 +3,6 @@ var brfs = require('brfs');
 var through = require('through');
 var fs = require('fs');
 
-// enable if you are running:
-//  sudo npm install -g corsproxy
-//var CORS_PROXY = 'http://localhost:9292/';
-var CORS_PROXY = undefined;
-
-
 var browserify_builtins = require('browserify/lib/builtins');
 browserify_builtins.child_process = 'child_process.js';
 browserify_builtins.fs = require.resolve('browserify-fs'); // TODO: what is the api equivalent of cli -r fs:browserify-fs?
@@ -34,21 +28,6 @@ var textReplacements = [
 
   // npm/node_modules/npm-registry-client/index.js
   [/client\[name\] = require\(entry\)/g, 'client[name] = window.npmRegistryClientRequire(entry)'],
-
-
-  // npm/node_modules/npm-registry-client/lib/request.js
-  [/(var req = request\(opts, decodeResponseBody\(done\)\))/g,
-    (CORS_PROXY ? 'opts.url = "' + CORS_PROXY + '" + opts.url.replace(/^https?:\\/\\//, ""); ' : '')
-    + '$1;\n'
-  ],
-
-  // node_modules/npm/node_modules/npm-registry-client/lib/initialize.js
-  //  workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
-  [/url          : uri/, 'url: (uri.href ? uri.href : uri)'],
-
-  // node_modules/npm/node_modules/npm-registry-client/lib/fetch.js
-  //  browser-request() requires a callback, even though request() doesn't
-  [/cb\(null, request\(opts\)\)/g, 'cb(null, request(opts, function(){ console.log("request ",arguments); }));'],
 ];
 
 // Included file data for staticReadFileSync; this is similar to
