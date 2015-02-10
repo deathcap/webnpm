@@ -38,17 +38,9 @@ var textReplacements = [
 
   // npm/node_modules/npm-registry-client/lib/request.js
   [/(var req = request\(opts, decodeResponseBody\(done\)\))/g,
-    'opts.followRedirect = false; ' // unsupported option by browser-request TODO: support it? via a corsproxy?
-    + (CORS_PROXY ? 'opts.url = "' + CORS_PROXY + '" + opts.url.replace(/^https?:\\/\\//, ""); ' : '')
+    (CORS_PROXY ? 'opts.url = "' + CORS_PROXY + '" + opts.url.replace(/^https?:\\/\\//, ""); ' : '')
     + '$1;\n'
-    // browser-request doesn't fully implement the request API :(
-    + 'req.on = function(name,cb) {\n' // TODO: have browser-request inherit EventEmitter, or Stream..
-    + '   if (name==="error") req.onerror = cb;\n'
-    + '   else console.log("request on",name,cb);\n'
-    + '};\n'
-    + 'req.headers = {};\n' // browser-request missing headers too
   ],
-  [/'followRedirect'/, "'followRedirectX'"], // suppress "option.followRedirect is not supported" error https://github.com/iriscouch/browser-request/issues/37
 
   // node_modules/npm/node_modules/npm-registry-client/lib/initialize.js
   //  workaround https://github.com/iriscouch/browser-request/pull/44 browser-request cannot request URL objects
