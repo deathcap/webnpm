@@ -33,6 +33,9 @@ var textReplacements = [
   // Disable credentials in XHR for CORS proxies with Access-Control-Allow-Origin: *
   // TODO: surely a better way to make this change
   [/params.withCredentials = true/g, 'params.withCredentials = false'],
+
+  // download tarball URLs also through CORS proxy TODO: more general fix, please
+  [/url\.parse\(dist\.tarball\)/g, 'url.parse(("http://cors.maxogden.com/"+dist.tarball))'],
 ];
 
 // Included file data for staticReadFileSync; this is similar to
