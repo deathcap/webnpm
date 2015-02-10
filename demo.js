@@ -28,6 +28,11 @@ var textReplacements = [
 
   // npm/node_modules/npm-registry-client/index.js
   [/client\[name\] = require\(entry\)/g, 'client[name] = window.npmRegistryClientRequire(entry)'],
+
+  // node_modules/npm/node_modules/request somewhere
+  // Disable credentials in XHR for CORS proxies with Access-Control-Allow-Origin: *
+  // TODO: surely a better way to make this change
+  [/params.withCredentials = true/g, 'params.withCredentials = false'],
 ];
 
 // Included file data for staticReadFileSync; this is similar to
