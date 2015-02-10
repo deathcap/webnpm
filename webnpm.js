@@ -194,7 +194,7 @@ function main() {
     // until https://github.com/npm/npm-registry-couchapp/issues/108#issuecomment-73352201 add support for CORS headers
     // from https://github.com/Rob--W/cors-anywhere/
     // fails with 'A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true.
-    // Origin 'http://localhost:9966' is therefore not allowed access.'
+    // Origin 'http://localhost:9966' is therefore not allowed access.' withCredentials false, then it works
     //registry: 'http://cors-anywhere.herokuapp.com/http://registry.npmjs.org'
     registry: 'http://cors.maxogden.com/http://registry.npmjs.org'
     // from https://github.com/zeke/npm-registry-cors-proxy, but it does not allow OPTIONS - '404 Not Found Cannot OPTIONS /voxel-engine'

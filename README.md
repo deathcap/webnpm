@@ -20,8 +20,12 @@ and [npm](https://github.com/npm/npm) are available in the global
     npm.commands.substack()
     npm.commands.xmas()
 
-Requires a browser implementing the [Filesystem API](http://www.html5rocks.com/en/tutorials/file/filesystem/)
-(tested on Chrome version 40).
+    npm.commands.list()
+    npm.commands.config(['list'])
+    npm.commands.config(['get', 'registry']
+
+    npm.commands.owner(['ls', 'npm'])
+    npm.commands.view(['voxel-engine'])
 
 ## License
 
