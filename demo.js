@@ -40,6 +40,7 @@ var textReplacements = [
   // node_modules/npm/node_modules/npm-registry-client/lib/fetch.js
   // workaround https://github.com/substack/http-browserify/issues/81 Response inherits from Stream instead of Stream.Readable
   // note: the 'request' module has the same workaround
+  // TODO: report fix upstream?
   [/          \/\/ Work around bug in node v0\.10\.0 where the CryptoStream\s+\/\/ gets stuck and never starts reading again\.\s+res\.resume\(\)/g, 'if (res.resume) res.resume()'],
 
 ];

@@ -1,5 +1,5 @@
 
-// replaces fs.readFileSync
+// replacesif (res.resume) res.resume() fs.readFileSync
 window.staticReadFileSync = function(path) {
   console.log('readFileSync', path);
 
@@ -139,6 +139,15 @@ fs.statSync = function(file) {
     isFIFO: function() { return false; },
     isDirectory: function() { return false; },
   };
+};
+
+fs.unlinkSync = function(path) {
+  console.log('unlinkSync', path);
+  if (path === undefined) return; // ? fs-write-stream-atomic cleanupSync calls with undefined
+  // this will have to do
+  fs.unlink(path, function(err) {
+    console.log('unlinkSync completed',path,err);
+  });
 };
 
 fs.readdirSync = window.staticReaddirSync;
