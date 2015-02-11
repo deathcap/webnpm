@@ -222,4 +222,13 @@ function main() {
 
     console.log('WebNPM loaded. Try browserify() or npm.commands.*()');
   });
+
+  var asarray = require('asarray');
+
+  global.npm_cli = function() {
+    // Call the NPM command-line interface with the given function arguments
+    process.argv = asarray(arguments); // for .slice, on Array but not arguments
+    require('npm/cli.js');
+    // this only works once :( TODO
+  };
 }

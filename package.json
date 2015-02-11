@@ -18,7 +18,8 @@
     "wzrd": "^1.2.1",
     "brfs": "^1.3.0",
     "through": "^2.3.6",
-    "browserify-fs": "^1.0.0"
+    "browserify-fs": "^1.0.0",
+    "asarray": "^0.1.0"
   },
   "license": "MIT"
 }
