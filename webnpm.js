@@ -224,11 +224,26 @@ function main() {
   });
 
   var asarray = require('asarray');
+  // relevant bits for cli
+  var nopt = require('./node_modules/npm/node_modules/nopt');
+  var npmconf = require('./node_modules/npm/lib/config/core.js');
+  var configDefs = npmconf.defs;
+  var shorthands = configDefs.shorthands;
+  var types = configDefs.types;
+  var errorHandler = require('./node_modules/npm/lib/utils/error-handler.js');
 
   global.npm_cli = function() {
     // Call the NPM command-line interface with the given function arguments
     process.argv = asarray(arguments); // for .slice, on Array but not arguments
-    require('npm/cli.js');
-    // this only works once :( TODO
+    //require('npm/cli.js'); // this only works once :( TODO
+    // We have to do our own option parsing
+    var conf = nopt(types, shorthands);
+    npm.argv = conf.argv.remain;
+    if (npm.deref(npm.argv[0])) npm.command = npm.argv.shift();
+    else config.usage = true;
+
+    npm.commands[npm.command](npm.argv, errorHandler);
+    // TODO: still need to reset some state here..
+    // "Callback called more than once." if rerun with another command
   };
 }
