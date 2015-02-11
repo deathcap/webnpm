@@ -204,10 +204,14 @@ function main() {
     // from https://github.com/Rob--W/cors-anywhere/
     // fails with 'A wildcard '*' cannot be used in the 'Access-Control-Allow-Origin' header when the credentials flag is true.
     // Origin 'http://localhost:9966' is therefore not allowed access.' withCredentials false, then it works
-    //registry: 'http://cors-anywhere.herokuapp.com/http://registry.npmjs.org'
-    registry: 'http://cors.maxogden.com/http://registry.npmjs.org'
+    //registry: 'http://cors-anywhere.herokuapp.com/http://registry.npmjs.org',
+    registry: 'http://cors.maxogden.com/http://registry.npmjs.org',
     // from https://github.com/zeke/npm-registry-cors-proxy, but it does not allow OPTIONS - '404 Not Found Cannot OPTIONS /voxel-engine'
-    //registry: 'http://npm-registry-cors-proxy.herokuapp.com'
+    //registry: 'http://npm-registry-cors-proxy.herokuapp.com',
+
+    // npm.config.get('argv').cooked requires nopt parsing, used by faq and help
+    // TODO: call npm-cli https://github.com/deathcap/webnpm/issues/8
+    argv: {cooked: []},
   };
 
   npm.load(config, function(err) {
