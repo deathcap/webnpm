@@ -37,6 +37,10 @@ var textReplacements = [
   // download tarball URLs also through CORS proxy TODO: more general fix, please
   [/url\.parse\(dist\.tarball\)/g, 'url.parse(("http://cors.maxogden.com/"+dist.tarball))'],
 
+  // node_modules/npm/lib/cache/update-index.js https://github.com/deathcap/webnpm/issues/7
+  // full path for CORS proxifying URL with search
+  [/\/-\/all/g, '/http://registry.npmjs.org/-/all'],
+
   // node_modules/npm/node_modules/npm-registry-client/lib/fetch.js
   // workaround https://github.com/substack/http-browserify/issues/81 Response inherits from Stream instead of Stream.Readable
   // note: the 'request' module has the same workaround
