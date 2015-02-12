@@ -2,9 +2,23 @@
 console.log('WebNPM starting');
 
 var consoleWidget = require('console-widget')();
+var ansi = require('ansi-to-html');
 var asarray = require('asarray');
 
 consoleWidget.open();
+
+var logConsole = function(args) {
+  var array = asarray(args);
+  var string = array.join('');
+
+  //consoleWidget.log(string);
+
+  var node = document.createElement('span'); // TODO: ansi to DOM nodes instead of serialized HTML?
+  node.innerHTML = new ansi().toHtml(string); // TODO: try using ansi-html-stream instead
+
+  consoleWidget.logNode(node);
+};
+
 
 // replacesif (res.resume) res.resume() fs.readFileSync
 window.staticReadFileSync = function(path) {
@@ -171,13 +185,6 @@ fs.mkdir('/tmp', function(err) {
   main(fs);
 });
 
-var logArguments = function(args) {
-  var array = asarray(args);
-  var string = array.join('');
-
-  consoleWidget.log(string);
-};
-
 function main() {
   var browserify = require('browserify');
   global.browserify = browserify;
@@ -189,11 +196,11 @@ function main() {
 
   process.stdout.write = function() {
     console.log.apply(console, arguments);
-    logArguments(arguments);
+    logConsole(arguments);
   };
   process.stderr.write = function() {
     console.warn.apply(console, arguments);
-    logArguments(arguments);
+    logConsole(arguments);
   };
 
 
