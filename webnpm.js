@@ -1,4 +1,11 @@
 
+console.log('WebNPM starting');
+
+var consoleWidget = require('console-widget')();
+var asarray = require('asarray');
+
+consoleWidget.open();
+
 // replacesif (res.resume) res.resume() fs.readFileSync
 window.staticReadFileSync = function(path) {
   console.log('readFileSync', path);
@@ -164,6 +171,13 @@ fs.mkdir('/tmp', function(err) {
   main(fs);
 });
 
+var logArguments = function(args) {
+  var array = asarray(args);
+  var string = array.join('');
+
+  consoleWidget.log(string);
+};
+
 function main() {
   var browserify = require('browserify');
   global.browserify = browserify;
@@ -175,9 +189,11 @@ function main() {
 
   process.stdout.write = function() {
     console.log.apply(console, arguments);
+    logArguments(arguments);
   };
   process.stderr.write = function() {
     console.warn.apply(console, arguments);
+    logArguments(arguments);
   };
 
 
@@ -223,7 +239,6 @@ function main() {
     console.log('WebNPM loaded. Try browserify() or npm.commands.*()');
   });
 
-  var asarray = require('asarray');
   // relevant bits for cli
   var nopt = require('./node_modules/npm/node_modules/nopt');
   var npmconf = require('./node_modules/npm/lib/config/core.js');
