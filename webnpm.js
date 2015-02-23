@@ -4,6 +4,7 @@ console.log('WebNPM starting');
 var consoleWidget = require('console-widget')();
 var ansi = require('ansi-to-html');
 var asarray = require('asarray');
+var shelljs = require('shelljs/global'); // adds ls(), cat(), etc. to global
 
 consoleWidget.open();
 
@@ -171,6 +172,11 @@ fs.unlinkSync = function(path) {
   });
 };
 
+fs.existsSync = function(path) {
+  console.log('exists?', path);
+  return true; // TODO
+};
+
 fs.readdirSync = window.staticReaddirSync;
 
 // TODO: browserify-fs WriteStream
@@ -186,6 +192,8 @@ fs.mkdir('/tmp', function(err) {
 });
 
 function main() {
+  global.fs = require('fs');
+
   var browserify = require('browserify');
   global.browserify = browserify;
 
@@ -203,6 +211,9 @@ function main() {
     logConsole(arguments);
   };
 
+  process.exit = function(code) {
+    logConsole('Process exited ',code); // not really
+  };
 
   process.binding = function() {
     return {fs: ''}
