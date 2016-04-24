@@ -20,7 +20,7 @@
     "browserify-fs": "^1.0.0",
     "console-widget": "^0.2.1",
     "npm": "^2.5.0",
-    "shelljs": "^0.3.0",
+    "shellasync": "^1.0.0",
     "through": "^2.3.6",
     "wzrd": "^1.2.1"
   },

@@ -4,7 +4,7 @@ console.log('WebNPM starting');
 var consoleWidget = require('console-widget')();
 var ansi = require('ansi-to-html');
 var asarray = require('asarray');
-var shelljs = require('shelljs/global'); // adds ls(), cat(), etc. to global
+var shellasync = require('shellasync/global'); // adds ls(), cat(), etc. to global
 
 consoleWidget.open();
 
